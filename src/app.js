@@ -31,6 +31,8 @@ function checkRepositoryId(request, response, next) {
     return next();
 }
 
+app.use("/repositories/:id", checkRepositoryId);
+
 app.get("/repositories", (request, response) => {
     return response.json(repositories);
 });
@@ -50,7 +52,7 @@ app.post("/repositories", (request, response) => {
     return response.status(201).json(newRepository);
 });
 
-app.put("/repositories/:id", checkRepositoryId, (request, response) => {
+app.put("/repositories/:id", (request, response) => {
     const repositoryIndex = response.locals.repositoryIndex;
     const repository = repositories[repositoryIndex];
 
@@ -65,13 +67,13 @@ app.put("/repositories/:id", checkRepositoryId, (request, response) => {
     return response.json(repository);
 });
 
-app.delete("/repositories/:id", checkRepositoryId, (request, response) => {
+app.delete("/repositories/:id", (request, response) => {
     repositories.splice(response.locals.repositoryIndex, 1);
 
     return response.status(204).send();
 });
 
-app.post("/repositories/:id/like", checkRepositoryId, (request, response) => {
+app.post("/repositories/:id/like", (request, response) => {
     const repositoryIndex = response.locals.repositoryIndex;
     const repository = repositories[repositoryIndex];
 
